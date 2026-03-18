@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Chart, ChartOptions, registerables } from 'chart.js';
+import { EarlyAlertService, AlertDashboardData } from '../../services/early-alert.service';
+
 
 Chart.register(...registerables);
 
@@ -13,6 +15,10 @@ Chart.register(...registerables);
 })
 export class DashBoardGeneral implements AfterViewInit, OnDestroy {
   private charts: Chart<any, any, any>[] = [];
+  loading = true;
+  lastUpdated = '';
+  constructor(private alertService: EarlyAlertService) {}
+
 
   kpis = [
     {
@@ -98,8 +104,9 @@ export class DashBoardGeneral implements AfterViewInit, OnDestroy {
     this.createPerformanceRadarChart();
     this.createActivityVsRiskChart();
     this.createRiskByModuleChart();
+    
   }
-
+  
   ngOnDestroy(): void {
     this.destroyCharts();
   }
